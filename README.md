@@ -1,4 +1,4 @@
-<img src="https://img.shields.io/badge/Status:-Unestable-red"> <img src="https://img.shields.io/badge/Server status:-Down-red"> <img src="https://img.shields.io/badge/Post type:-Local only-yellow">
+<img src="https://img.shields.io/badge/Status:-Unestable-orange"> <img src="https://img.shields.io/badge/Server status:-Up-green"> <img src="https://img.shields.io/badge/Post type:-World Wide-green">
 
 
 
@@ -13,7 +13,7 @@ What can you do you with COBOLT? Simple!
 * Be free from GameJolt's greed
 * Upload images
 * Post entire articles
-* Upload games with GJ's API
+* ~~Upload games with GJ's API~~
 * Not pay IRL money for useless things
 * Let your community make mods!
 *(This may change in the future)*  
