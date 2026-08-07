@@ -11,9 +11,7 @@
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=2" />
     <meta name="apple-mobile-web-app-title" content="Cobolt" />
     <link rel="manifest" href="/site.webmanifest?v=2" />
-    <!--await Amplify.Auth.signIn(username, password);-->
-    <!-- AWS Amplify for authentication and storage -->
-    <script src="https://dvf70qrt8ch2j.cloudfront.net/amplify/aws-amplify.min.js"></script>
+    <!-- AWS Amplify script removed - we're using our own Flask server instead -->
     <style>
         body { font-family: Arial, sans-serif; background: #23272a; color: #fff; margin: 0; }
         header { background: #181c20; padding: 1em; text-align: center; }
@@ -25,16 +23,13 @@
         .upload-form { margin-bottom: 2em; }
         input, button { padding: 0.5em; border-radius: 4px; border: none; }
         button { background: #3d59ab; color: #ffff; font-weight: bold; cursor: pointer; }
+        img { image-rendering: pixelated; }
     </style>
 </head>
 <body>
     <header>
         <p>Hope. We will have hope and prepare y'alls username before being taken, we are going to have finally a server!</p>
-        <img src=logo.webp alt="COBOLT Logo" style="height: 50px;">
-                <style>img {
-            image-rendering: pixelated;
-        }
-        </style>
+        <img src="logo.webp" alt="COBOLT Logo" style="height: 50px;">
         <nav>
             <a href="#" onclick="showSection('games')">Games</a>
             <a href="#" onclick="showSection('upload')">Upload</a>
@@ -46,7 +41,6 @@
         <div id="auth-section">
             <h2>Sign In</h2>
             <input id="username" placeholder="Username" required/>
-            <input id="mail" type="email" placeholder="Email" required />
             <input id="password" type="password" placeholder="Password" required/>
             <button onclick="signIn()">Sign In</button>
             <button onclick="signUp()">Sign Up</button>
@@ -60,7 +54,9 @@
             <h2>Upload Game</h2>
             <form class="upload-form" onsubmit="uploadGame(event)">
                 <input id="game-title" placeholder="Game Title" required /><br><br>
-                <input id="game-image" type="file" accept="image/*" required /><br><br>
+                <input id="game-description" placeholder="Description (optional)" /><br><br>
+                <input id="game-file" type="file" accept=".zip,.tar,.gz,.7z" required /><br><br>
+                <input id="game-image" type="file" accept="image/*" /><br><br>
                 <button type="submit">Upload</button>
             </form>
             <div id="upload-message"></div>
@@ -75,154 +71,217 @@
             <div id="post-list"></div>
         </div>
     </div>
-    <script>
-        // AWS Amplify configuration (replace with your AWS config)
-        window.AWS.config = {
-            Auth: {
-                region: 'us-east-1',
-                userPoolId: 'us-east-1_example',
-                userPoolWebClientId: 'exampleclientid',
-            },
-            Storage: {
-                AWSS3: {
-                    bucket: 'your-gamejolt-copy-bucket',
-                    region: 'us-east-1',
-                }
-            }
-        };
-        window.Amplify.configure(window.AWS.config);
 
-        // Simple UI logic
+    <script>
+        const API_BASE = "http://10.0.0.9:5000";
+        let authToken = null;
+        let currentUsername = null;
         function showSection(section) {
             document.getElementById('games-section').style.display = section === 'games' ? '' : 'none';
             document.getElementById('upload-section').style.display = section === 'upload' ? '' : 'none';
             document.getElementById('posts-section').style.display = section === 'posts' ? '' : 'none';
         }
-
-        // Authentication
         async function signIn() {
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
+
             try {
-                await window.Amplify.Auth.signIn(username, password);
+                const response = await fetch(`${API_BASE}/api/login`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    document.getElementById('auth-message').innerText = data.error || 'Sign in failed.';
+                    return;
+                }
+
+                authToken = data.token;
+                currentUsername = data.username;
+
                 document.getElementById('auth-section').style.display = 'none';
                 showSection('games');
                 loadGames();
                 loadPosts();
-            } else {
-                document.getElementById('auth-message').innerText = 'Invalid username or password.';
             } catch (e) {
-                document.getElementById('auth-message').innerText = e.message;
+                document.getElementById('auth-message').innerText = 'Could not reach server: ' + e.message;
             }
         }
 
         async function signUp() {
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
+
             try {
-                await aws_amplify.Auth.signUp({ username, password });
+                const response = await fetch(`${API_BASE}/api/register`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ username, password })
+                });
+                const data = await response.json();
+
+                if (!response.ok) {
+                    document.getElementById('auth-message').innerText = data.error || 'Sign up failed.';
+                    return;
+                }
+
                 document.getElementById('auth-message').innerText = 'Sign up successful. Please sign in.';
             } catch (e) {
-                document.getElementById('auth-message').innerText = e.message;
+                document.getElementById('auth-message').innerText = 'Could not reach server: ' + e.message;
             }
         }
 
         async function signOut() {
-            await aws_amplify.Auth.signOut();
+            if (authToken) {
+                try {
+                    await fetch(`${API_BASE}/api/logout`, {
+                        method: "POST",
+                        headers: { "Authorization": `Bearer ${authToken}` }
+                    });
+                } catch (e) {
+                }
+            }
+
+            authToken = null;
+            currentUsername = null;
+
             document.getElementById('auth-section').style.display = '';
             document.getElementById('games-section').style.display = 'none';
             document.getElementById('upload-section').style.display = 'none';
             document.getElementById('posts-section').style.display = 'none';
         }
 
-        // Game upload
+
         async function uploadGame(event) {
-            event.preventDefault();
+            event.preventDefault(); 
+
             const title = document.getElementById('game-title').value;
-            const file = document.getElementById('game-image').files[0];
-            if (!file) return;
-            const key = `games/${Date.now()}_${file.name}`;
+            const description = document.getElementById('game-description').value;
+            const gameFile = document.getElementById('game-file').files[0];
+            const imageFile = document.getElementById('game-image').files[0];
+
+            if (!gameFile) {
+                document.getElementById('upload-message').innerText = 'Please choose a game file.';
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append("title", title);
+            formData.append("description", description);
+            formData.append("game_file", gameFile);
+            if (imageFile) {
+                formData.append("image_file", imageFile);
+            }
+
             try {
-                await aws_amplify.Storage.put(key, file, { contentType: file.type });
-                // Save game metadata (in real app, use DynamoDB or similar)
-                let games = JSON.parse(localStorage.getItem('games') || '[]');
-                games.push({ title, image: key });
-                localStorage.setItem('games', JSON.stringify(games));
+                const response = await fetch(`${API_BASE}/api/games/upload`, {
+                    method: "POST",
+                    headers: {
+                        "Authorization": `Bearer ${authToken}`
+                    },
+                    body: formData
+                });
+                const data = await response.json();
+
+                if (!response.ok) {
+                    document.getElementById('upload-message').innerText = data.error || 'Upload failed.';
+                    return;
+                }
+
                 document.getElementById('upload-message').innerText = 'Game uploaded!';
+                document.getElementById('game-title').value = '';
+                document.getElementById('game-description').value = '';
                 loadGames();
             } catch (e) {
-                document.getElementById('upload-message').innerText = e.message;
+                document.getElementById('upload-message').innerText = 'Could not reach server: ' + e.message;
             }
         }
 
-        // Load games
         async function loadGames() {
             const gameList = document.getElementById('game-list');
             gameList.innerHTML = '';
-            let games = JSON.parse(localStorage.getItem('games') || '[]');
-            for (const game of games) {
-                let imageUrl = '';
-                try {
-                    imageUrl = await aws_amplify.Storage.get(game.image);
-                } catch (err) { console.error(`Failed to get image ${game.image}:`, err); }
-                const card = document.createElement('div');
-                card.className = 'game-card';
-                card.innerHTML = `<img src="${imageUrl}" alt="${game.title}"><h3>${game.title}</h3>`;
-                gameList.appendChild(card);
+
+            try {
+                const response = await fetch(`${API_BASE}/api/games`);
+                const games = await response.json();
+
+                for (const game of games) {
+                    const card = document.createElement('div');
+                    card.className = 'game-card';
+
+                    const imageTag = game.image_filename
+                        ? `<img src="${API_BASE}/api/images/${game.image_filename}" alt="${game.title}">`
+                        : '';
+
+                    card.innerHTML = `
+                        ${imageTag}
+                        <h3>${game.title}</h3>
+                        <p>${game.description || ''}</p>
+                        <p style="color:#aaa;font-size:0.85em;">by ${game.username}</p>
+                        <a href="${API_BASE}/api/games/${game.id}/download" style="color:#8ab4f8;">Download</a>
+                    `;
+                    gameList.appendChild(card);
+                }
+            } catch (e) {
+                gameList.innerText = 'Could not load games: ' + e.message;
             }
         }
 
-        // Posts logic
         async function createPost(event) {
             event.preventDefault();
             const content = document.getElementById('post-content').value.trim();
             if (!content) return;
-            let posts = JSON.parse(localStorage.getItem('posts') || '[]');
-            // Optionally, get username from Auth
-            let username = '';
-            try {
-                const user = await aws_amplify.Auth.currentAuthenticatedUser();
-                username = user.username || '';
-            } catch {}
-            posts.unshift({
-                content,
-                username: username,
-                date: new Date().toISOString()
-            });
-            localStorage.setItem('posts', JSON.stringify(posts));
-            document.getElementById('post-content').value = '';
-            document.getElementById('post-message').innerText = 'Post created!';
-            loadPosts();
-        }
 
-        function loadPosts() {
-            const postList = document.getElementById('post-list');
-            postList.innerHTML = '';
-            let posts = JSON.parse(localStorage.getItem('posts') || '[]');
-            for (const post of posts) {
-                const div = document.createElement('div');
-                div.style.background = '#23272a';
-                div.style.margin = '1em 0';
-                div.style.padding = '1em';
-                div.style.borderRadius = '6px';
-                div.innerHTML = `<strong></strong> <span style="color:#aaa;font-size:0.9em;">${new Date(post.date).toLocaleString()}</span><br>`;
-                div.querySelector('strong').textContent = post.username || 'Anonymous';
-                div.append(post.content); // Safely appends content as a text node
-                postList.appendChild(div);
+            try {
+                const response = await fetch(`${API_BASE}/api/posts`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify({ title: content.slice(0, 50), body: content })
+                });
+                const data = await response.json();
+
+                if (!response.ok) {
+                    document.getElementById('post-message').innerText = data.error || 'Post failed.';
+                    return;
+                }
+
+                document.getElementById('post-content').value = '';
+                document.getElementById('post-message').innerText = 'Post created!';
+                loadPosts();
+            } catch (e) {
+                document.getElementById('post-message').innerText = 'Could not reach server: ' + e.message;
             }
         }
 
-        // Auto sign-in check
-        aws_amplify.Auth.currentAuthenticatedUser()
-            .then(() => {
-                document.getElementById('auth-section').style.display = 'none';
-                showSection('games');
-                loadGames();
-                loadPosts();
-            })
-            .catch(() => {
-                document.getElementById('auth-section').style.display = '';
-            });
+        async function loadPosts() {
+            const postList = document.getElementById('post-list');
+            postList.innerHTML = '';
+
+            try {
+                const response = await fetch(`${API_BASE}/api/posts`);
+                const posts = await response.json();
+
+                for (const post of posts) {
+                    const div = document.createElement('div');
+                    div.style.background = '#23272a';
+                    div.style.margin = '1em 0';
+                    div.style.padding = '1em';
+                    div.style.borderRadius = '6px';
+                    div.innerHTML = `<strong></strong> <span style="color:#aaa;font-size:0.9em;">${new Date(post.created_at).toLocaleString()}</span><br>`;
+                    div.querySelector('strong').textContent = post.username || 'Anonymous';
+                    div.append(post.body); 
+                    postList.appendChild(div);
+                }
+            } catch (e) {
+                postList.innerText = 'Could not load posts: ' + e.message;
+            }
+        }
     </script>
 </body>
 </html>
