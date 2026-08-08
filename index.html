@@ -23,7 +23,6 @@
         .upload-form { margin-bottom: 2em; }
         input, button { padding: 0.5em; border-radius: 4px; border: none; }
         button { background: #3d59ab; color: #ffff; font-weight: bold; cursor: pointer; }
-        img { image-rendering: pixelated; }
         .upload { position: absolute; left:42.5% }
         .games { position: absolute; left:36%; top: 13.7%; }
         .logout { position: absolute; left:50%; top:13.5% }
@@ -34,18 +33,10 @@
         <p>Hope. We will have hope and prepare y'alls username before being taken, we are going to have finally a server!</p>
         <img src="Images/aerocoboltbeta.svg" alt="COBOLT Logo" style="height: 50px;">
         <nav>
-            <div class="games">
-                <a href="#" onclick="showSection('games')"><img src="Images/Games.svg" alt="Games" width=29%></a>
-            </div>
-            <div class="upload"> 
-                <a href="#" onclick="showSection('upload')"><img src="Images/Upload.svg" alt="Upload" width=30%></a>
-            </div> 
-            <div class="home">
-                <a href="#" onclick="showSection('posts')"><img src="Images/Home.svg" alt="Home" width=3.5%></a>
-            </div>
-            <div class="logout">
-                <a href="#" onclick="signOut()"><img src="Images/Log_out.svg" alt="Log out" width=25%></a>
-            </div> 
+            <a href="#" onclick="showSection('games')">Games</a>
+            <a href="#" onclick="showSection('upload')">Upload</a>
+            <a href="#" onclick="showSection('posts')">Posts</a>
+            <a href="#" onclick="signOut()">Sign Out</a>
         <!-- Made the divs so we can move the icons, else would break shit -->
         </nav>
     </header>
