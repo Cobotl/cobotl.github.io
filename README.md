@@ -1,4 +1,4 @@
-<img src="https://img.shields.io/badge/Status:-Unestable-orange"> <img src="https://img.shields.io/badge/Server status:-Down-red"> <img src="https://img.shields.io/badge/Post type:-World Wide-green">
+<img src="https://img.shields.io/badge/Status:-Unestable-orange"> <img src="https://img.shields.io/badge/Server status:-Up-green"> <img src="https://img.shields.io/badge/Post type:-World Wide-green">
 
 
 
