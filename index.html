@@ -5,6 +5,7 @@
     <title>COBOLT</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="links.css">
+    <link rel="stylesheet" href="css/capsule.css">
     <link rel="icon" type="image/png" href="Images/favicon-96x96.png?v=2" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="Images/favicon.svg?v=2" />
     <link rel="shortcut icon" href="Images/favicon.ico?v=2" />
@@ -18,9 +19,8 @@
         footer { background: #181c20; padding: 1em; text-align: center; }
         nav a { color: #fff; margin: 0 1em; text-decoration: none; }
         .container { max-width: 900px; margin: 2em auto; background: #2c3136; padding: 2em; border-radius: 8px; }
-        .game-list { display: flex; flex-wrap: wrap; gap: 1em; }
-        .game-card { background: #23272a; padding: 1em; border-radius: 6px; width: 200px; }
-        .game-card img { width: 100%; border-radius: 4px; }
+        .game-list { display: flex; flex-wrap: wrap; gap: 1em; justify-content: center;}
+        .game-card { background: #23272a; padding: 1em; border-radius: 6px; width: 160px; }
         .upload-form { margin-bottom: 2em; }
         input, button { padding: 0.5em; border-radius: 4px; border: none; }
         button { background: #3d59ab; color: #ffff; font-weight: bold; cursor: pointer; }
@@ -220,8 +220,15 @@
                         ? `<img src="${API_BASE}/api/images/${game.image_filename}" alt="${game.title}">`
                         : '';
 
+                    //card.innerHTML = `
+                    //    ${imageTag}
+                    //    <img class="capsule-gloss" src="Images/capsulegloss.svg"/>
+                    //`;
                     card.innerHTML = `
-                        ${imageTag}
+                        <div class="game-capsule">
+                            ${imageTag}
+                            <img class="capsule-gloss" src="Images/capsulegloss.svg"/>
+                        </div>
                         <h3>${game.title}</h3>
                         <p>${game.description || ''}</p>
                         <p style="color:#aaa;font-size:0.85em;">by ${game.username}</p>

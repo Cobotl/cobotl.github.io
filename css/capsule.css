@@ -1,0 +1,18 @@
+.game-capsule {
+    position: relative;
+    width: 150px;
+    height: 225px;
+    margin: 4px;
+    border-radius: 32px;
+    background-color: black;
+}
+.game-capsule img {
+    width: inherit;
+    position: absolute;
+    border-radius: inherit;
+}
+
+.capsule-gloss {
+    top: 0;
+    box-shadow: 0px 0px 48px rgba(255, 255, 255, 0.25) inset;
+}
