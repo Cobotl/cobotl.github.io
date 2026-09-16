@@ -49,6 +49,7 @@
             <button onclick="signUp()">Sign Up</button>
             <div id="auth-message"></div>
             <p>By creating an account you agree to the <a href="conduct.html">Code of conduct</a> and have read the <a href="guidelines.html">Community Guidelines</a> of Cobolt</p>
+            <p>Cobolt is in beta, please report any and all bugs you find. Things are subject to change.</p>
         </div>
         <div id="games-section" style="display:none;">
             <h2>Games</h2>
@@ -59,7 +60,10 @@
             <form class="upload-form" onsubmit="uploadGame(event)">
                 <input id="game-title" placeholder="Game Title" required /><br><br>
                 <input id="game-description" placeholder="Description (optional)" /><br><br>
+                <h3>Game file</h3>
                 <input id="game-file" type="file" accept=".zip,.tar,.gz,.7z" required /><br><br>
+                <h3>Game image</h3>
+                <p>Must be 1:1.</p>
                 <input id="game-image" type="file" accept="image/*" /><br><br>
                 <button type="submit">Upload</button>
             </form>
