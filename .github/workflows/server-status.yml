@@ -22,10 +22,10 @@ jobs:
           echo "response=$RESPONSE" >> "$GITHUB_OUTPUT"
 
           if echo "$RESPONSE" | grep -q '"status".*"ok"'; then
-            echo "message=up" >> "$GITHUB_OUTPUT"
+            echo "message=Up" >> "$GITHUB_OUTPUT"
             echo "color=brightgreen" >> "$GITHUB_OUTPUT"
           else
-            echo "message=down" >> "$GITHUB_OUTPUT"
+            echo "message=Down" >> "$GITHUB_OUTPUT"
             echo "color=red" >> "$GITHUB_OUTPUT"
           fi
 
@@ -35,7 +35,7 @@ jobs:
           cat > badges/status.json << EOF
           {
             "schemaVersion": 1,
-            "label": "Server running?",
+            "label": "Server status",
             "message": "${{ steps.health.outputs.message }}",
             "color": "${{ steps.health.outputs.color }}"
           }
