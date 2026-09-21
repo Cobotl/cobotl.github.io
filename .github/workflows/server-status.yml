@@ -35,7 +35,7 @@ jobs:
           cat > badges/status.json << EOF
           {
             "schemaVersion": 1,
-            "label": "cobolt",
+            "label": "Server running?",
             "message": "${{ steps.health.outputs.message }}",
             "color": "${{ steps.health.outputs.color }}"
           }
