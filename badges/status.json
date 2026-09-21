@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "label": "cobolt",
+  "label": "Server running?",
   "message": "up",
   "color": "brightgreen"
 }
