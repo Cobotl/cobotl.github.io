@@ -1,4 +1,4 @@
-<img src="https://img.shields.io/badge/Status:-Somewhat_stable-orange"> <img src="https://img.shields.io/badge/Server status:-Up-green"> <img src="https://img.shields.io/badge/Post type:-World Wide-green">
+<img src="https://img.shields.io/badge/Status:-Somewhat_stable-orange"> ![COBOLT Status](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/Cobotl/cobotl.github.io/main/badges/status.json) <img src="https://img.shields.io/badge/Post type:-World Wide-green">
 
   # COBOLT, your platform, your game updates
 What can you do you with COBOLT? Simple!
