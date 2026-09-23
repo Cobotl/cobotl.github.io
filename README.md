@@ -29,4 +29,4 @@ Yes, we may add advertisements to keep the domain, but that is optional if you g
 
 **Will we add AI moderation?**
 
-* **No, every desition is made by a human which is a small group of people that consists of 4 people**. [It would be great if you can help us catch some](mailto:coboltfoss@proton.me)
+* **No, every decision is made by a human which is a small group of people that consists of 4 people**. [It would be great if you can help us catch some](mailto:coboltfoss@proton.me)
