@@ -2,7 +2,7 @@ name: Cobolt Status
 
 on:
   schedule:
-    - cron: '*/5 * * * *'
+    - cron: '*/1 * * * *'
   workflow_dispatch:
 
 permissions:
@@ -18,7 +18,7 @@ jobs:
       - name: Check health endpoint
         id: health
         run: |
-          RESPONSE=$(curl -s --max-time 10 https://cobolt-1-xmcq.taild5b1d6.ts.net/api/health || echo "unreachable")
+          RESPONSE=$(curl -s --max-time 10 https://cobolt-1-xmcq.gaur-alnilam.ts.net/api/health || echo "unreachable")
           echo "response=$RESPONSE" >> "$GITHUB_OUTPUT"
 
           if echo "$RESPONSE" | grep -q '"status".*"ok"'; then
