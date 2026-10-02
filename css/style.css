@@ -46,6 +46,11 @@ footer { padding: 1em; text-align: center; }
 input, button { padding: 0.5em; border-radius: 4px; border: none; }
 button { background: var(--main-button-color); color: #ffff; font-weight: bold; cursor: pointer; }
 
+/* text */
+header h1 {
+    margin: 4px;
+}
+
 /* pages */
 /* common */
 .container {
