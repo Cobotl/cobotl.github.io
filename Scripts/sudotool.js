@@ -1,5 +1,5 @@
 // Same backend as index.html.
-const API_BASE = "https://cobolt-1-xmcq.taild5b1d6.ts.net";
+const API_BASE = "https://cobolt-1-xmcq.gaur-alnilam.ts.net/";
 
 let authToken = null;
 let currentUsername = null;
