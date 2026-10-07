@@ -1,9 +1,8 @@
 <img src="https://img.shields.io/badge/Status:-Somewhat_stable-orange"> ![COBOLT Status](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/Cobotl/cobotl.github.io/main/badges/status.json) <img src="https://img.shields.io/badge/Post type:-World Wide-green">
 
-  # COBOLT, your platform, your games
+  # COBOLT, your platform, your game updates
 What can you do you with COBOLT? Simple!
 
-[//]: <> (to do: remove mention of gamejolt, idk how to word this tho)
 
 * Be free from GameJolt's greed
 * Post entire articles
