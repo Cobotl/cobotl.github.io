@@ -1,97 +1,81 @@
+<!-- not complete yet -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>[User] - COBOLT</title>
+    <title>COBOLT - Zephyr</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="links.css">
+    <link rel="stylesheet" href="css/style.css">
     <link rel="icon" type="image/png" href="Images/favicon-96x96.png?v=2" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="Images/favicon.svg?v=2" />
     <link rel="shortcut icon" href="Images/favicon.ico?v=2" />
     <link rel="apple-touch-icon" sizes="180x180" href="Images/apple-touch-icon.png?v=2" />
     <meta name="apple-mobile-web-app-title" content="Cobolt" />
     <link rel="manifest" href="/site.webmanifest?v=2" />
+    <!-- AWS Amplify script removed - we're using our own Flask server instead -->
+    <!-- embed -->
+    <meta content="Cobolt - Zephyr (@zephyr)" property="og:title" />
+    <meta content="Example bio. Also, this is a prototype, profiles aren't actually implemented yet." property="og:description" />
+    <meta content="https://cobolt.github.io/testacc.html" property="og:url" />
+    <meta content="https://cobotl.github.io/Images/Embed%20Logo.png" property="og:image" />
+    <meta content="#0047AB" data-react-helmet="true" property="theme-color" />
+
     <style>
-        .pfp {
-            overflow: hidden;
-            border-radius: 50%;
-            width: 200px;
-            height: 200px;
-            display: inline-block;
-            position: absolute;
-            left: 20px;
-        }
+        /*
+        archived, replaced with /css/style.css
 
-        .pfp img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .profile_name {
-            position: absolute;
-            top: 150px;
-            left: 13%
-        }
-
-        .handle {
-            position: absolute;
-            top: 190px;
-            left: 13%
-        }
-
-        .posts {
-            position: absolute;
-            top: 30%;
-            left: 40%
-        }
-
-        .pc {
-            position: absolute;
-            left: 30%;
-            top: 40%;
-            background-color: #3d59ab;
-            height: 50%;
-            width: 30%;
-        }
-
-        .post {
-            position: absolute;
-            left: 40%;
-            top: 60%;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-    </style>
-    <style>
         body { font-family: Arial, sans-serif; background: #23272a; color: #fff; margin: 0; }
         header { background: #181c20; padding: 1em; text-align: center; }
+        footer { background: #181c20; padding: 1em; text-align: center; }
         nav a { color: #fff; margin: 0 1em; text-decoration: none; }
         .container { max-width: 900px; margin: 2em auto; background: #2c3136; padding: 2em; border-radius: 8px; }
-        .game-list { display: flex; flex-wrap: wrap; gap: 1em; }
-        .game-card { background: #23272a; padding: 1em; border-radius: 6px; width: 200px; }
-        .game-card img { width: 100%; border-radius: 4px; }
+        .game-list { display: flex; flex-wrap: wrap; gap: 1em; justify-content: center;}
+        .game-card { background: #23272a; padding: 1em; border-radius: 6px; width: 160px; }
         .upload-form { margin-bottom: 2em; }
         input, button { padding: 0.5em; border-radius: 4px; border: none; }
         button { background: #3d59ab; color: #ffff; font-weight: bold; cursor: pointer; }
+        .upload { position: absolute; left:42.5% }
+        .games { position: absolute; left:36%; top: 13.7%; }
+        .logout { position: absolute; left:50%; top:13.5% }
+        */
     </style>
 </head>
 <body>
     <header>
-                <div class="logo"><a><img src=Images/logo.webp alt="COBOLT Logo" style="height: 50px;"></a></div>
-                <style>.logo {
-            image-rendering: pixelated;
-        }
-        </style>
+        <img src="Images/aerocoboltbeta.svg" alt="COBOLT Logo" style="height: 50px;">
+        <nav>
+            <a href="#" onclick="showSection('games')">Games</a>
+            <a href="#" onclick="showSection('upload')">Upload</a>
+            <a href="#" onclick="showSection('posts')">Posts</a>
+            <a href="#" onclick="signOut()">Sign Out</a>
+        <!-- Made the divs so we can move the icons, else would break shit -->
+        </nav>
     </header>
-    <div class="pfp"><img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fstatic.miraheze.org%2Fwindowswallpaperwiki%2F9%2F9c%2FDefaultAccountTile_(Windows_11).png&f=1&nofb=1&ipt=5398d5e4db9607fe0f32b6fe31606107ba4e047337ee77e0250b3d864c78038d" alt="Profile Picture"></div>
-    <div class="profile_name"><h3>QA test account</h3></div>
-    <div class="handle"><a href="testacc.html">@test</a></div>
-    <div class="pc"></div> <!-- Do not confuse, this means "Post container" -->
-    <div class="posts"><p>Posts</p></div>
-    <div class="post"><p>Lorem ipsum dolor sit amet.</p></div> <!-- Gonna insert a JS code so the container is dynamic -->
-    <footer>
-        <img src="Images/aerocoboltbeta.svg" alt="COBOLT Logo">
-        <a href="conduct.html">Code of conduct</a>
-    </footer>
+    <div class="behind_navbar">
+        <div class="banner_area">
+            <div class="banner_container">
+                <img class="banner" src="Images/prototype/test_banner.png">
+            </div>
+            <div class="banner_header_area">
+                <div class="profile_pfp">
+                    <img src="Images/prototype/test_pfp_1.png" alt="Profile Picture">
+                    <img class="capsule-gloss" src="Images/gloss/Circle Gloss.svg"/>
+                </div>
+                <div class="banner_info_area">
+                    <div class="profile_name"><h2>Zephyr</h2></div>
+                    <div class="handle"><a href="testacc.html">@zephyr</a></div>
+                </div>
+            </div>
+        </div>
+        <div class="pc"></div> <!-- Do not confuse, this means "Post container" -->
+        <div class="posts"><p>Posts</p></div>
+        <div class="post"><p>havent got to this part yet</p></div> <!-- Gonna insert a JS code so the container is dynamic -->
+        <footer>
+            <a href="conduct.html">Code of conduct</a><br>
+            <a href="guidelines.html">Comunity guidelines</a>
+        </footer>
+
+    </div>
 </body>
 </html>
