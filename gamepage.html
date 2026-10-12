@@ -6,14 +6,13 @@
     <title>COBOLT</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/links.css">
-    <link rel="stylesheet" href="css/capsule.css">
-    <link rel="icon" type="image/png" href="Images/favicon-96x96.png" sizes="96x96" />
-    <link rel="icon" type="image/svg+xml" href="Images/favicon.svg" />
-    <link rel="shortcut icon" href="Images/favicon.ico" />
-    <link rel="apple-touch-icon" sizes="180x180" href="Images/apple-touch-icon.png" />
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" type="image/png" href="Images/logos/favicon-96x96.png?v=2" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="Images/logos/faviconlogo.svg?v=2" />
+    <link rel="shortcut icon" href="Images/Embed%20Logo.png?v=2" />
+    <link rel="apple-touch-icon" sizes="180x180" href="Images/logos/apple-touch-icon.png?v=2" />
     <meta name="apple-mobile-web-app-title" content="Cobolt" />
     <link rel="manifest" href="/site.webmanifest" />
-    <link rel="stylesheet" href="css/style.css" />
     <!-- <style>
         body { font-family: Arial, sans-serif; background: #23272a; color: #fff; margin: 0; }
         header { background: #181c20; padding: 1em; text-align: center; }
@@ -32,7 +31,14 @@
 </head>
 <body>
 <header>
-    <a href="index.html"><img src="Images/aerocoboltbeta.svg" alt="COBOLT Logo" style="height: 50px;"></a>
+    <img src="Images/logos/aerocoboltbeta.png" alt="COBOLT Logo" style="height: 50px;">
+    <nav>
+        <a href="#" onclick="showSection('games')">Games</a>
+        <a href="#" onclick="showSection('upload')">Upload</a>
+        <a href="#" onclick="showSection('posts')">Posts</a>
+        <a href="#" onclick="signOut()">Sign Out</a>
+    <!-- Made the divs so we can move the icons, else would break shit -->
+    </nav>
 </header>
 <div class="banner_area">
     <div class="banner_container">
