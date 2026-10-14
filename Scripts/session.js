@@ -1,10 +1,10 @@
-var token = null;
-var username = null;
+var authToken = null;
+var currentUsername = null;
 
 function saveSession() {
     try {
-        localStorage.setItem('kb_token', token);
-        localStorage.setItem('kb_user', username);
+        localStorage.setItem('kb_token', authToken);
+        localStorage.setItem('kb_user', currentUsername);
     } catch (e) {}
 }
 
@@ -17,7 +17,9 @@ function clearSession() {
 
 function loadSession() {
     try {
-        token = localStorage.getItem('kb_token');
-        username = localStorage.getItem('kb_user');
+        var t = localStorage.getItem('kb_token');
+        var u = localStorage.getItem('kb_user');
+        authToken = t && t !== 'null' ? t : null;
+        currentUsername = u && u !== 'null' ? u : null;
     } catch (e) {}
 }
