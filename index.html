@@ -92,9 +92,7 @@
     </div>
 
     <script>
-        const API_BASE = "https://cobolt-1-xmcq.gaur-alnilam.ts.net/";
-        let authToken = null;
-        let currentUsername = null;
+        const API_BASE = "https://cobolt-1-xmcq.gaur-alnilam.ts.net";
         function showSection(section) {
             document.getElementById('games-section').style.display = section === 'games' ? '' : 'none';
             document.getElementById('upload-section').style.display = section === 'upload' ? '' : 'none';
@@ -120,6 +118,7 @@
 
                 authToken = data.token;
                 currentUsername = data.username;
+                saveSession();
 
                 document.getElementById('auth-section').style.display = 'none';
                 showSection('games');
@@ -166,6 +165,7 @@
 
             authToken = null;
             currentUsername = null;
+            clearSession();
 
             document.getElementById('auth-section').style.display = '';
             document.getElementById('games-section').style.display = 'none';
@@ -205,6 +205,8 @@
                 });
                 const data = await response.json();
 
+                if (response.status === 401) { signOut(); document.getElementById('auth-message').innerText = 'Session expired. Sign in again.'; return; }
+
                 if (!response.ok) {
                     document.getElementById('upload-message').innerText = data.error || 'Upload failed.';
                     return;
@@ -231,24 +233,32 @@
                     const card = document.createElement('div');
                     card.className = 'game-card';
 
-                    const imageTag = game.image_filename
-                        ? `<img src="${API_BASE}/api/images/${game.image_filename}" alt="${game.title}">`
-                        : '';
+                    const capsule = document.createElement('div');
+                    capsule.className = 'game-capsule';
+                    if (game.image_filename) {
+                        const img = document.createElement('img');
+                        img.src = `${API_BASE}/api/images/${encodeURIComponent(game.image_filename)}`;
+                        img.alt = game.title;
+                        capsule.appendChild(img);
+                    }
+                    const gloss = document.createElement('img');
+                    gloss.className = 'capsule-gloss';
+                    gloss.src = 'Images/capsulegloss.svg';
+                    capsule.appendChild(gloss);
 
-                    //card.innerHTML = `
-                    //    ${imageTag}
-                    //    <img class="capsule-gloss" src="Images/capsulegloss.svg"/>
-                    //`;
-                    card.innerHTML = `
-                        <div class="game-capsule">
-                            ${imageTag}
-                            <img class="capsule-gloss" src="Images/capsulegloss.svg"/>
-                        </div>
-                        <h3>${game.title}</h3>
-                        <p>${game.description || ''}</p>
-                        <p style="color:#aaa;font-size:0.85em;">by ${game.username}</p>
-                        <a href="${API_BASE}/api/games/${game.id}/download" style="color:#8ab4f8;">Download</a>
-                    `;
+                    const title = document.createElement('h3');
+                    title.textContent = game.title;
+                    const desc = document.createElement('p');
+                    desc.textContent = game.description || '';
+                    const by = document.createElement('p');
+                    by.style.cssText = 'color:#aaa;font-size:0.85em;';
+                    by.textContent = 'by ' + game.username;
+                    const dl = document.createElement('a');
+                    dl.href = `${API_BASE}/api/games/${encodeURIComponent(game.id)}/download`;
+                    dl.style.color = '#8ab4f8';
+                    dl.textContent = 'Download';
+
+                    card.append(capsule, title, desc, by, dl);
                     gameList.appendChild(card);
                 }
             } catch (e) {
@@ -271,6 +281,8 @@
                     body: JSON.stringify({ title: content.slice(0, 50), body: content })
                 });
                 const data = await response.json();
+
+                if (response.status === 401) { signOut(); document.getElementById('auth-message').innerText = 'Session expired. Sign in again.'; return; }
 
                 if (!response.ok) {
                     document.getElementById('post-message').innerText = data.error || 'Post failed.';
@@ -307,6 +319,14 @@
             } catch (e) {
                 postList.innerText = 'Could not load posts: ' + e.message;
             }
+        }
+
+        loadSession();
+        if (authToken) {
+            document.getElementById('auth-section').style.display = 'none';
+            showSection('games');
+            loadGames();
+            loadPosts();
         }
     </script>
     <footer>
