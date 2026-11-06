@@ -171,18 +171,15 @@ h3 {
     background: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
 }
 
+background: var(--container-background-color);
 .post_container {
     position: relative;
 }
 
 
 .gloss_container {
-    max-width: 900px;
-    margin: 2em auto;
-    background: var(--container-background-color);
     padding: 1em;
     border-radius: 24px;
-    position: relative;
     overflow: hidden;
 
     box-shadow: 0px 0px 24px rgba(255, 255, 255, 0.25) inset, 0px -2px 24px rgba(255, 255, 255, 0.25) inset, 0px 2px 16px rgba(0, 0, 0, 0.5);
@@ -200,4 +197,20 @@ h3 {
     border-radius: 16px;
 
     background: linear-gradient(0deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.1));
+}
+
+/* properties */
+.pos_relat {
+    position: relative;
+}
+
+/* width */
+.maxw900 {
+    max-width: 900px;
+    margin: 2em auto;
+}
+
+/* bg colors */
+.bgcol_contain {
+    background: var(--container-background-color);
 }
