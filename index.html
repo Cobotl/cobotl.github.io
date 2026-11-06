@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>COBOLT</title>
+    <title>Cobolt</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/links.css">
     <link rel="stylesheet" href="css/style.css">
@@ -41,7 +41,7 @@
     </style>
 </head>
 <body>
-    <header>
+    <header class="gloss_container">
         <img src="Images/logos/aerocoboltbeta.png" alt="COBOLT Logo" style="height: 50px;">
         <nav>
             <a href="#" onclick="showSection('games')">Games</a>
@@ -94,6 +94,7 @@
     <script>
         const API_BASE = "https://cobolt-1-xmcq.gaur-alnilam.ts.net";
         function showSection(section) {
+            document.getElementById('auth-section').style.display = section === 'auth' ? '' : 'none';
             document.getElementById('games-section').style.display = section === 'games' ? '' : 'none';
             document.getElementById('upload-section').style.display = section === 'upload' ? '' : 'none';
             document.getElementById('posts-section').style.display = section === 'posts' ? '' : 'none';
